@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/firework/Desktop/data-structures/leetcode/349/main.cpp
+iostream
+-
+vector
+-
+unordered_set
+-
+unordered_map
+-
+math.h
+-
+
