@@ -1,4 +1,7 @@
 待刷.md
 *.txt
-/cmake-build-debug/
+*/cmake-build-debug/
+.idea
+*.iml
+*.xml
 
