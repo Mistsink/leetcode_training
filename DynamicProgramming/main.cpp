@@ -61,6 +61,22 @@ private:
         return preRes[index];
     }
 
+
+
+    //  是否能 在[0, ... index] 物品中，填满大小为sum的背包
+    bool tryPartition (const vector<int> &nums, int index, int sum, vector<vector<bool>> &memo, vector<vector<bool>> &visited) {
+        if (sum == 0) return true;
+        if (sum < 0 || index < 0) return false;
+
+        if (!visited[index][sum]) {
+            visited[index][sum] = true;
+            memo[index][sum] = tryPartition(nums, index - 1, sum, memo, visited)
+                    || tryPartition(nums, index-1, sum-nums[index], memo, visited);
+        }
+
+        return memo[index][sum];
+    }
+
 public:
     /**
      * 70. 爬楼梯
@@ -113,10 +129,62 @@ public:
 
 
     /**
-     * 416. 分割等和子集
+     * 416. 分割等和子集------01背包问题
      */
     bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for (int num: nums) sum += num;
 
+        if (sum%2) return false;
+
+//        //  memo[0 ,.  ... sum/2]   故容量为sum/2 + 1
+//        vector<vector<bool>>memo(nums.size(), vector<bool>(sum/2 + 1, false));
+//        vector<vector<bool>>visited(nums.size(), vector<bool>(sum/2, false));
+//        return tryPartition(nums, nums.size() - 1, sum/2, memo, visited);
+
+        int n = nums.size();
+        int C = sum / 2;
+        vector<bool> memo(C + 1, false);
+
+        //  考虑是否能将第一个物品放入背包
+        for (int i = 0; i <= C; i ++)
+            memo[i] = nums[0] == i;
+
+        for (int i = 1; i < n; i ++) {
+            for (int j = C; j >= nums[i]; j --) {
+                memo[j] = memo[j] || memo[j-nums[i]];
+            }
+        }
+
+        return memo[C];
+    }
+
+
+
+
+    /**
+     * 300. 最长递增子序列
+     */
+    int lengthOfLIS(vector<int>& nums) {
+        if (nums.empty()) return 0;
+
+        //  memo[i]  表示 以索引 i 为结尾的最长递增子序列长度
+        vector<int> memo(nums.size(), 1);
+
+        for (int i = 1; i < nums.size(); i ++) {
+            for (int j = 0; j < i; j ++) {
+                if (nums[i] > nums[j]) {
+                    memo[i] = max(memo[i], memo[j] + 1);
+                }
+            }
+        }
+
+        int res = 1;
+        for (int m : memo) {
+            res = max(m, res);
+        }
+
+        return res;
     }
 };
 
