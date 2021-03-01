@@ -129,6 +129,40 @@ public:
         return res;
     }
 
+
+    /**
+     *  88. 合并两个有序数组
+     *  与归并排序中的合并的思路一致
+     */
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        if (m == 0) {
+            nums1 = nums2;
+            return;
+        }
+        if (n == 0) return;
+
+        vector<int> temp(m);
+        for (int i = 0; i < m; i ++) temp[i] = (nums1[i]);
+
+        if (nums2[0] > nums1[m-1]) {
+            for (int i = m; i < m+n; i ++)
+                nums1[i] = nums2[i-m];
+            return;
+        }
+
+        int l = 0, r = 0, i = 0;
+        while (l < m && r < n) {
+            if (temp[l] < nums2[r]) {
+                nums1[i++] = temp[l++];
+            } else {
+                nums1[i++] = nums2[r++];
+            }
+        }
+
+
+        while (l < m)   nums1[i++] = temp[l++];
+        while (r < n)   nums1[i++] = nums2[r++];
+    }
 };
 
 int main() {
