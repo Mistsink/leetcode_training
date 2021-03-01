@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -162,6 +163,27 @@ public:
 
         while (l < m)   nums1[i++] = temp[l++];
         while (r < n)   nums1[i++] = nums2[r++];
+    }
+
+
+    /**
+     * 215. 数组中的第K个最大元素
+     * 一：快排里面的partition过程中，每次partition返回的索引是定下来的，即每次都找到了 第 索引+1 小的值
+     * 二：根据最大堆和最小堆特性，最大堆可以选 第 k 最小的值(堆内是前k小的值)，最小堆可以选 第 k 最大的值(堆内是最大的k个值)
+     */
+    int findKthLargest(vector<int>& nums, int k) {
+        //  这里采用最小堆
+        priority_queue<int, vector<int>, greater<>> minHeap;
+        for (int i = 0;i < k; i ++) minHeap.push(nums[i]);
+
+        for (int i = k; i < nums.size(); i ++) {
+            if (nums[i] > minHeap.top()) {
+                minHeap.pop();
+                minHeap.push(nums[i]);
+            }
+        }
+
+        return minHeap.top();
     }
 };
 
