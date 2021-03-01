@@ -185,17 +185,44 @@ public:
 
         return minHeap.top();
     }
+
+
+    /**
+     * 125. 验证回文串
+     * 这里采用双指针的做法
+     */
+    bool isPalindrome(string s) {
+        if (s.size() == 0) return true;
+        int l = 0, r = s.size()-1;
+
+        //  去除 s 开头的 不合法字符
+        //  测试表明这样预处理，比在while循环体内部的比较中加入判定条件 会得到更高的效率
+        while(l <= r && !isValidChar(s[l])) l ++;
+
+        //  [l ~ r] 这个区间中比较
+        while (l <= r) {
+            while (l <= r && !isValidChar(s[l])) l++;
+            while (l <= r && !isValidChar(s[r])) r--;
+
+            if (tolower(s[l]) != tolower(s[r]))
+                return false;
+
+            l ++;
+            r --;
+        }
+        return true;
+    }
+
+
+private:
+    bool isValidChar (char c) {
+        return c >= '0' && c <= '9' && c >= 'A' && c <= 'Z' && c >= 'a' && c <= 'z';
+    }
 };
 
 int main() {
-    int arr[] = {0, 1, 3, 0, 4, 6, 7};
 
-    vector<int> vec(arr, arr + sizeof(arr)/ sizeof(int));
-    Solution().moveZeroes(vec);
-
-    for (int num: vec) {
-        cout << num << '\t';
-    }
+//    cout << ;
 
     return 0;
 }
