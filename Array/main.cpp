@@ -214,6 +214,26 @@ public:
     }
 
 
+
+    /**
+     * 11. 盛最多水的容器
+     * 一： 采用双指针的思路，同时在调整指针的考虑就是贪心的思想
+     */
+    int maxArea(vector<int>& height) {
+        int l = 0, r = height.size() - 1, res = 0;
+
+        // [l, ... r] 区间 不断调整更高的木板
+        while (l < r) {
+            res = max(res, (r-l) * min(height[l], height[r]));
+
+            if (height[l] < height[r]) l ++;
+            else r --;
+        }
+
+        return res;
+    }
+
+
 private:
     bool isValidChar (char c) {
         return c >= '0' && c <= '9' && c >= 'A' && c <= 'Z' && c >= 'a' && c <= 'z';
