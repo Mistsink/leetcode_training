@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <unordered_map>
 
 using namespace std;
 
@@ -163,6 +164,7 @@ public:
 
         while (l < m)   nums1[i++] = temp[l++];
         while (r < n)   nums1[i++] = nums2[r++];
+
     }
 
 
@@ -233,16 +235,47 @@ public:
         return res;
     }
 
-
 private:
     bool isValidChar (char c) {
         return c >= '0' && c <= '9' && c >= 'A' && c <= 'Z' && c >= 'a' && c <= 'z';
+    }
+
+
+public:
+    /**
+     * 438. 找到字符串中所有字母异位词
+     * 滑动窗口
+     */
+    vector<int> findAnagrams(string s, string p) {
+        if(s.size()<p.size()) return {};
+
+        vector<int> freq_s(26, 0), freq_p(26, 0), res;
+        int l = 0, r = -1;
+
+        //  初始化目标词频 及 窗口词频
+        for(char c : p){
+            freq_p[c - 'a' ]++;
+            freq_s[s[++r] - 'a' ]++;
+        }
+
+        if ( freq_s == freq_p ) res.push_back( l );
+
+        //  维护滑动窗口
+        while( r < s.size()-1 ){
+            freq_s[s[++r] - 'a' ]++;
+            freq_s[s[l++] - 'a' ]--;
+            if ( freq_s == freq_p )
+                res.push_back( l );
+        }
+        return res;
     }
 };
 
 int main() {
 
-//    cout << ;
+    auto *s = new Solution();
+    vector<int> t = s->findAnagrams("cbaebabacd","abc");
+    for (int n: t) cout << n <<endl;
 
     return 0;
 }
